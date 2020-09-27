@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 
 module.exports = () => {
   const connect = () => {
-    mongoose.connect('mongodb://root:1234@localhost:27017/admin', {
+    mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true, useFindAndModify: false
     }, (err) => {
       if(err) console.error(err);
