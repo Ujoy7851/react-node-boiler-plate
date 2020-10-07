@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const { auth } = require('../middlewares/auth');
 const { User } = require('../models/User');
 
 router.get('/', (req, res, next) => {
-  res.send('Hello World!');
+  return res.send('Hello World!');
 });
 
 router.post('/register', (req, res, next) => {
@@ -14,7 +15,6 @@ router.post('/register', (req, res, next) => {
       next(err);
     }
     return res.status(200).json({ success: true });
-    
   });
 });
 
@@ -41,7 +41,7 @@ router.post('/login', async (req, res, next) => {
         if(err) {
           next(err);
         }
-        res.cookie('x_auth', user.token)
+        return res.cookie('x_auth', user.token)
           .status(200)
           .json({
             loginSuccess: true,
@@ -52,6 +52,21 @@ router.post('/login', async (req, res, next) => {
   } catch(err) {
     next(err);
   }
+});
+
+router.get('/logout', auth, async (req, res, next) => {
+  try {
+    const user = await User.findOneAndUpdate({
+      _id: req.user._id
+    }, {
+      token: ''
+    });
+    return res.status(200).json({ success: true });
+  } catch(err) {
+    console.error(err);
+    return res.json({ success: false, err });
+  }
+  
 })
 
 module.exports = router;

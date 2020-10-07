@@ -3,8 +3,6 @@ const router = express.Router();
 const { auth } = require('../middlewares/auth');
 
 router.get('/', auth, (req, res) => {
-  console.log('auth router')
-  console.log(req.user)
   res.status(200)
     .json({
       // _id: req.user._id,
@@ -18,7 +16,6 @@ router.get('/', auth, (req, res) => {
       user: req.user,
       isAuth: true
     });
-  console.log('auth router 2')
 });
 
 module.exports = router;
