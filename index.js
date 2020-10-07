@@ -3,6 +3,7 @@ const app = express();
 const port = 3000;
 const connectDB = require('./models');
 const indexRouter = require('./routes');
+const authRouter = require('./routes/auth');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', indexRouter);
+app.use('/auth', authRouter);
 
 app.use((req, res, next) => {
   const err = new Error('Not Found');
